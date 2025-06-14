@@ -1,29 +1,17 @@
 import streamlit as st
-
-# Simple mood-to-emoji dictionary
-mood_emojis = {
-    "happy": "😄",
-    "sad": "😢",
-    "angry": "😡",
-    "excited": "🤩",
-    "nervous": "😬",
-    "bored": "😴",
-}
+from textorbit.data_loader import load_data, select_columns
 
 def main():
-    st.title("Mood Classifier 😎")
-    st.subheader("Type your mood and get an emoji!")
+    st.set_page_config(page_title="Text Clustering App", layout="wide")
+    st.title("📊 Text Data Clustering & Summarization")
 
-    # User input
-    user_mood = st.text_input("How are you feeling today?").lower()
+    df = load_data()
 
-    # Output
-    if user_mood:
-        emoji = mood_emojis.get(user_mood, "🤔")
-        st.write(f"Your mood emoji is: {emoji}")
-
-    st.markdown("---")
-    st.caption("Built with ❤️ using Streamlit and Hugging Face Spaces.")
+    if df is not None:
+        selected_df = select_columns(df)
+        if selected_df is not None:
+            st.success("✅ Data and columns are ready to be processed.")
+            st.dataframe(selected_df.head())
 
 if __name__ == "__main__":
     main()
