@@ -3,3 +3,7 @@ huggingface_hub
 pandas
 numpy
 openpyxl
+scikit-learn
+sentence-transformers
+scipy
+openai
