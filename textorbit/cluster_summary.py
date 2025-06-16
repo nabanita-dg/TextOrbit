@@ -6,7 +6,7 @@ def generate_cluster_summary(text_list):
     from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content

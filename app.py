@@ -3,8 +3,13 @@ from textorbit.data_loader import load_data, select_columns
 from textorbit.embedding_generator import generate_combined_embeddings
 from textorbit.cluster_engine import cluster_texts
 from textorbit.cluster_summary import generate_cluster_summary
+import openai
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load variables from .env file
+openai.api_key = os.getenv("OPENAI_API_KEY")
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # ----------------- Load Data -----------------
