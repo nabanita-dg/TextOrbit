@@ -3,13 +3,16 @@ from textorbit.data_loader import load_data, select_columns
 from textorbit.embedding_generator import generate_combined_embeddings
 from textorbit.cluster_engine import cluster_texts
 from textorbit.cluster_summary import generate_cluster_summary
+from huggingface_hub import login
 import openai
 
 import os
 from dotenv import load_dotenv
 
 load_dotenv()  # Load variables from .env file
-openai.api_key = os.getenv("OPENAI_API_KEY")
+login(os.getenv("HUGGINGFACE_TOKEN"))
+#openai.api_key = os.getenv("OPENAI_API_KEY")
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # ----------------- Load Data -----------------
@@ -71,8 +74,9 @@ def get_cluster_details(cluster_df, selected_df, cluster_id_selected):
     with col2:
         st.markdown(f"### 🧠 LLM Summary for Cluster {cluster_id_selected}")
         with st.spinner("Generating summary with LLM..."):
-            summary = generate_cluster_summary(cluster_data["text"].tolist())
+            summary, elapsed_time = generate_cluster_summary(cluster_data["text"].tolist())
             st.markdown(summary)
+            st.caption(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
 
 # ----------------- Main Function -----------------
 def main():

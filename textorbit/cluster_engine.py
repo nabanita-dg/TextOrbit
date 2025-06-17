@@ -23,6 +23,7 @@ def cluster_texts(X, ids, tfidf_features, num_clusters=5):
     cluster_text_ids = defaultdict(list)
     cluster_scores = {}
     cluster_keywords = {}
+    num_of_texts = []
 
     # Inverse TF-IDF part of X (sparse) to extract top keywords
     X = csr_matrix(X)
@@ -31,6 +32,7 @@ def cluster_texts(X, ids, tfidf_features, num_clusters=5):
     for i in range(num_clusters):
         indices = np.where(labels == i)[0]
         cluster_text_ids[i] = [ids[idx] for idx in indices]
+        num_of_texts.append(len(cluster_text_ids[i]))
 
         # Score: Mean distance to centroid (cohesiveness)
         _, distances = pairwise_distances_argmin_min(km.cluster_centers_[i].reshape(1, -1), X[indices])
@@ -45,6 +47,7 @@ def cluster_texts(X, ids, tfidf_features, num_clusters=5):
     cluster_df = pd.DataFrame({
         "Cluster ID": list(cluster_text_ids.keys()),
         "Text IDs": list(cluster_text_ids.values()),
+        "Number of Text IDs": num_of_texts,
         "Score": [cluster_scores[i] for i in cluster_text_ids.keys()],
         "Keywords": [", ".join(cluster_keywords[i]) for i in cluster_keywords.keys()]
     })

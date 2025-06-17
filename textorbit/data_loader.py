@@ -9,6 +9,8 @@ def load_data():
                 df = pd.read_csv(uploaded_file)
             else:
                 df = pd.read_excel(uploaded_file)
+            df = df.sample(100)
+            st.write("Disclaimer: A Sample of 100 Data is extracted from input!")
             st.subheader("📄 Uploaded Data Preview")
             st.dataframe(df.head())
             return df
